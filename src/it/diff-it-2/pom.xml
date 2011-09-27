@@ -53,11 +53,7 @@
 							<goal>check</goal>
 						</goals>
 						<configuration>
-<<<<<<< HEAD
 							<failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
-=======
-							<failBuildInCaseOfDifferentConflict>true</failBuildInCaseOfDifferentConflict>
->>>>>>> f8df5f1... add content compare code
 						</configuration>
 					</execution>
 				</executions>

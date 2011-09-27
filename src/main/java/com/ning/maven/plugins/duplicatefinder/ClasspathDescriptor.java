@@ -45,7 +45,7 @@ public class ClasspathDescriptor
                                                                  Pattern.compile("META-INF/PLEXUS/.*"),
                                                                  Pattern.compile("META-INF/SERVICES/.*"),
                                                                  Pattern.compile("(META-INF/)?NOTICE(\\.TXT)?"),
-                                                                 Pattern.compile("README(\\.TXT)?"),
+                                                                 Pattern.compile("(META-INF/)?README(\\.TXT)?"),
                                                                  Pattern.compile(".*PACKAGE\\.HTML"),
                                                                  Pattern.compile(".*OVERVIEW\\.HTML"),
                                                                  Pattern.compile("META-INF/SPRING\\.HANDLERS"),
