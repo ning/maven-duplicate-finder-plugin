@@ -19,10 +19,9 @@ package com.ning.maven.plugins.duplicatefinder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,10 +32,8 @@ import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
+import java.util.zip.ZipFile;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 
 public class ClasspathDescriptor
@@ -192,16 +189,14 @@ public class ClasspathDescriptor
 
         List classes = new ArrayList();
         List resources = new ArrayList();
-        InputStream    input    = null;
-        ZipInputStream zipInput = null;
+        ZipFile zipFile = null;
 
         try {
-            input    = element.toURI().toURL().openStream();
-            zipInput = new ZipInputStream(input);
+            zipFile = new ZipFile(element);
+            Enumeration entries = zipFile.entries();
 
-            ZipEntry entry;
-
-            while ((entry = zipInput.getNextEntry()) != null) {
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) entries.nextElement();
                 if (!entry.isDirectory()) {
                     String name = entry.getName();
 
@@ -223,12 +218,13 @@ public class ClasspathDescriptor
             CACHED_BY_ELEMENT.put(element, new Cached(classes, resources));
         }
         finally {
-            if (zipInput != null) {
-                // this will also close the wrapped stream
-                IOUtils.closeQuietly(zipInput);
-            }
-            else if (input != null) {
-                IOUtils.closeQuietly(input);
+            // IOUtils has no closeQuietly for Closable in the 1.x series.
+            if (zipFile != null) {
+                try {
+                    zipFile.close();
+                } catch (IOException ex) {
+                    // ignored
+                }
             }
         }
     }

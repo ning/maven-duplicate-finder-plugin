@@ -60,6 +60,8 @@ public class DuplicateFinderMojo extends AbstractMojo
 {
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
+    private static Map CACHED_SHA256 = new HashMap();
+
     // the constants for conflicts
     private final static int NO_CONFLICT = 0;
     private final static int CONFLICT_CONTENT_EQUAL = 1;
@@ -423,6 +425,34 @@ public class DuplicateFinderMojo extends AbstractMojo
      */
     private String getSHA256HexOfElement(final File file, final String resourcePath) throws IOException
     {
+        class Sha256CacheKey {
+            final File file;
+            final String resourcePath;
+
+            Sha256CacheKey(File file, String resourcePath) {
+                this.file = file;
+                this.resourcePath = resourcePath;
+            }
+
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                Sha256CacheKey key = (Sha256CacheKey) o;
+
+                return file.equals(key.file) && resourcePath.equals(key.resourcePath);
+            }
+
+            public int hashCode() {
+                return 31 * file.hashCode() + resourcePath.hashCode();
+            }
+        }
+
+        final Sha256CacheKey key = new Sha256CacheKey(file, resourcePath);
+        if (CACHED_SHA256.containsKey(key)) {
+            return (String) CACHED_SHA256.get(key);
+        }
+
     	ZipFile zip = new ZipFile(file);
     	ZipEntry zipEntry = zip.getEntry(resourcePath);
     	if(zipEntry == null)
@@ -439,6 +469,8 @@ public class DuplicateFinderMojo extends AbstractMojo
 		} finally {
 			IOUtils.closeQuietly(in);
 		}
+
+        CACHED_SHA256.put(key, sha256);
     		
     	return sha256;
     }
