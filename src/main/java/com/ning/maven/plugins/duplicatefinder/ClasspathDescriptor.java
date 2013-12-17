@@ -16,22 +16,13 @@
 
 package com.ning.maven.plugins.duplicatefinder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.maven.plugin.MojoExecutionException;
+
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
+import java.util.zip.*;
 
 public class ClasspathDescriptor
 {
@@ -51,6 +42,7 @@ public class ClasspathDescriptor
                                                                  Pattern.compile("META-INF/SPRING\\.HANDLERS"),
                                                                  Pattern.compile("META-INF/SPRING\\.SCHEMAS"),
                                                                  Pattern.compile("META-INF/SPRING\\.TOOLING")};
+
     private static final Set IGNORED_LOCAL_DIRECTORIES = new HashSet();
 
     static {
@@ -66,6 +58,8 @@ public class ClasspathDescriptor
 
     private Pattern [] ignoredResourcesPatterns = null;
 
+    private Pattern [] ignoredPackagePatterns = null;
+
     public boolean isUseDefaultResourceIgnoreList()
     {
         return useDefaultResourceIgnoreList;
@@ -74,6 +68,21 @@ public class ClasspathDescriptor
     public void setUseDefaultResourceIgnoreList(boolean useDefaultResourceIgnoreList)
     {
         this.useDefaultResourceIgnoreList = useDefaultResourceIgnoreList;
+    }
+
+    public void setIgnoredPackages(final String [] ignoredPackages) throws MojoExecutionException
+    {
+        if (ignoredPackages != null) {
+            ignoredPackagePatterns = new Pattern [ignoredPackages.length];
+
+            try {
+                for (int i = 0 ; i < ignoredPackages.length; i++) {
+                    ignoredPackagePatterns[i] = Pattern.compile(ignoredPackages[i].toUpperCase());
+                }
+            } catch (PatternSyntaxException pse) {
+                throw new MojoExecutionException("Error compiling packageIgnore pattern: " + pse.getMessage());
+            }
+        }
     }
 
     public void setIgnoredResources(final String [] ignoredResources) throws MojoExecutionException
@@ -145,7 +154,7 @@ public class ClasspathDescriptor
                 }
                 else if (files[idx].isFile()) {
                     if ("class".equals(FilenameUtils.getExtension(files[idx].getName()))) {
-                        String className = (pckgName == null ? "" : pckgName + ".") + FilenameUtils.getBaseName(files[idx].getName());
+                        String className = (parentPackageName == null ? "" : parentPackageName + ".") + FilenameUtils.getBaseName(files[idx].getName());
 
                         addClass(className, element);
                     }
@@ -211,7 +220,7 @@ public class ClasspathDescriptor
 
     private void addClass(String className, File element)
     {
-        if (className.indexOf('$') < 0) {
+        if (!ignoreClass(className)) {
             Set elements = (Set)classesWithElements.get(className);
 
             if (elements == null) {
@@ -222,9 +231,29 @@ public class ClasspathDescriptor
         }
     }
 
+    private boolean ignoreClass(String className)
+    {
+
+        // always ignore inner classes
+        if (className.indexOf('$') < 0) {
+            return true;
+        }
+
+        // check whether there is an user supplied ignore pattern.
+        if (ignoredPackagePatterns != null) {
+            for (int idx = 0; idx < ignoredPackagePatterns.length; idx++) {
+                if (ignoredPackagePatterns[idx].matcher(className.toUpperCase()).matches()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private void addResource(String path, File element)
     {
-        if (!ignore(path)) {
+        if (!ignoreResource(path)) {
             Set elements = (Set)resourcesWithElements.get(path);
 
             if (elements == null) {
@@ -235,7 +264,7 @@ public class ClasspathDescriptor
         }
     }
 
-    private boolean ignore(String path)
+    private boolean ignoreResource(String path)
     {
         final String uppercasedPath = path.toUpperCase().replace(File.separatorChar, '/');
 

@@ -16,30 +16,16 @@
 
 package com.ning.maven.plugins.duplicatefinder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import com.pyx4j.log4j.MavenLogAppender;
+import org.apache.maven.artifact.*;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.*;
 import org.apache.maven.project.MavenProject;
-import com.pyx4j.log4j.MavenLogAppender;
+import org.slf4j.*;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * Finds duplicate classes.
@@ -80,6 +66,13 @@ public class DuplicateFinderMojo extends AbstractMojo
      * @parameter alias="ignoredResources"
      */
     private String [] ignoredResources;
+
+    /**
+     * Additional packages that should be ignored.
+     * @parameter alias="ignoredPackages"
+     */
+    private String [] ignoredPackages;
+
 
     /**
      * A set of artifacts with expected and resolved versions that are to be except from the check.
@@ -399,6 +392,7 @@ public class DuplicateFinderMojo extends AbstractMojo
 
         classpathDesc.setUseDefaultResourceIgnoreList(useDefaultResourceIgnoreList);
         classpathDesc.setIgnoredResources(ignoredResources);
+        classpathDesc.setIgnoredPackages(ignoredPackages);
 
         for (Iterator elementIt = classpathElements.iterator(); elementIt.hasNext();) {
             String element = (String)elementIt.next();
