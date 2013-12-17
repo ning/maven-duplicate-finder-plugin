@@ -79,16 +79,16 @@ public class DuplicateFinderMojo extends AbstractMojo
      * @since 1.0.3
      */
     private boolean failBuildInCaseOfDifferentContentConflict;
-    
+
     /**
      * Whether the mojo should fail the build if a conflict with content equal elements was found.
      * @parameter default-value="false"
      * @since 1.0.3
      */
     private boolean failBuildInCaseOfEqualContentConflict;
-    
+
     /**
-     * Whether the mojo should fail the build if a conflict was found. 
+     * Whether the mojo should fail the build if a conflict was found.
      * @parameter default-value="false"
      */
     private boolean failBuildInCaseOfConflict;
@@ -104,6 +104,12 @@ public class DuplicateFinderMojo extends AbstractMojo
      * @parameter alias="ignoredResources"
      */
     private String [] ignoredResources;
+
+    /**
+     * Additional packages that should be ignored.
+     * @parameter alias="ignoredPackages"
+     */
+    private String [] ignoredPackages;
 
     /**
      * A set of artifacts with expected and resolved versions that are to be except from the check.
@@ -537,6 +543,7 @@ public class DuplicateFinderMojo extends AbstractMojo
 
         classpathDesc.setUseDefaultResourceIgnoreList(useDefaultResourceIgnoreList);
         classpathDesc.setIgnoredResources(ignoredResources);
+        classpathDesc.setIgnoredPackages(ignoredPackages);
 
         for (Iterator elementIt = classpathElements.iterator(); elementIt.hasNext();) {
             String element = (String)elementIt.next();
