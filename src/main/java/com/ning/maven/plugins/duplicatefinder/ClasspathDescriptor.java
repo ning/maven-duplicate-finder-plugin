@@ -55,7 +55,9 @@ public class ClasspathDescriptor
                     Pattern.compile(".*OVERVIEW\\.HTML"),
                     Pattern.compile("META-INF/SPRING\\.HANDLERS"),
                     Pattern.compile("META-INF/SPRING\\.SCHEMAS"),
-                    Pattern.compile("META-INF/SPRING\\.TOOLING") };
+                    Pattern.compile("META-INF/SPRING\\.TOOLING"),
+                    Pattern.compile("META-INF/FACES-CONFIG\\.XML"),
+                    Pattern.compile("META-INF/RICHFACES/RESOURCE-MAPPINGS\\.PROPERTIES")};
 
     private static final Set<String> IGNORED_LOCAL_DIRECTORIES = new HashSet<String>();
 
