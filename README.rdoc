@@ -1,4 +1,4 @@
-{<img src="https://secure.travis-ci.org/typekpb/maven-duplicate-finder-plugin.png?branch=master)" alt="Build Status">}[http://travis-ci.org/typekpb/maven-duplicate-finder-plugin]
+{<img src="https://secure.travis-ci.org/ning/maven-duplicate-finder-plugin.png?branch=master)" alt="Build Status">}[http://travis-ci.org/ning/maven-duplicate-finder-plugin]
 
 = What is it
 
