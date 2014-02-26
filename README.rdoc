@@ -1,3 +1,5 @@
+{<img src="https://secure.travis-ci.org/typekpb/maven-duplicate-finder-plugin.png?branch=master)" alt="Build Status">}[http://travis-ci.org/typekpb/maven-duplicate-finder-plugin]
+
 = What is it
 
 The <tt>maven-duplicate-finder-plugin</tt> is a plugin that will search for classes with the same name, as well as resources with the same path,
