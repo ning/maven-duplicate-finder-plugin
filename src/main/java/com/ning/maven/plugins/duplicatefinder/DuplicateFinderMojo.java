@@ -143,6 +143,16 @@ public class DuplicateFinderMojo extends AbstractMojo
      * @parameter default-value="true"
      */
     private boolean checkTestClasspath = true;
+    
+    
+    private DuplicateFinderReporter reporter;
+    
+    /**
+     * A set of dependecies that should be completely ignored in the check.
+     * @parameter property="outputFileName"
+     */    
+    private String outputFileName;
+    
 
     /**
      * Skip the plugin execution.
@@ -168,6 +178,12 @@ public class DuplicateFinderMojo extends AbstractMojo
     public void execute() throws MojoExecutionException
     {
         MavenLogAppender.startPluginLog(this);
+        
+        if (outputFileName==null || "".equals(outputFileName)) {
+        	throw new MojoExecutionException("Need to supply an outputFileName");
+        }
+        
+        this.reporter = new FileOutputReporter(outputFileName);
 
         try {
             if (skip) {
@@ -296,15 +312,16 @@ public class DuplicateFinderMojo extends AbstractMojo
                 failBuildInCaseOfConflict ||
                 failBuildInCaseOfEqualContentConflict) {
 
-                printWarningMessage(classEqualConflictsByArtifactNames, "(but equal)", "classes");
+            	reporter.reportEqualConflicts(classEqualConflictsByArtifactNames,"classes");
             }
 
             conflict = CONFLICT_CONTENT_EQUAL;
         }
 
         if (!classDifferentConflictsByArtifactNames.isEmpty()) {
-            printWarningMessage(classDifferentConflictsByArtifactNames, "and different", "classes");
-
+        	
+        	reporter.reportDifferentConflicts(classDifferentConflictsByArtifactNames,"classes");
+        	
             conflict = CONFLICT_CONTENT_DIFFERENT;
         }
 
@@ -355,40 +372,21 @@ public class DuplicateFinderMojo extends AbstractMojo
                 failBuildInCaseOfConflict ||
                 failBuildInCaseOfEqualContentConflict) {
 
-                printWarningMessage(resourceEqualConflictsByArtifactNames, "(but equal)", "resources");
+            	reporter.reportEqualConflicts(resourceEqualConflictsByArtifactNames,"resources");
+            	
             }
 
             conflict = CONFLICT_CONTENT_EQUAL;
         }
 
         if (!resourceDifferentConflictsByArtifactNames.isEmpty()) {
-            printWarningMessage(resourceDifferentConflictsByArtifactNames, "and different", "resources");
-
+        	
+        	reporter.reportDifferentConflicts(resourceDifferentConflictsByArtifactNames,"resources");
+        	
             conflict = CONFLICT_CONTENT_DIFFERENT;
         }
 
         return conflict;
-    }
-
-    /**
-     * Prints the conflict messages. 
-     * 
-     * @param conflictsByArtifactNames the Map of conflicts (Artifactnames, List of classes)
-     * @param hint hint with the type of the conflict ("all equal" or "content different")
-     * @param type type of conflict (class or resource)
-     */
-    private void printWarningMessage(Map conflictsByArtifactNames, String hint, String type)
-    {
-        for (Iterator conflictIt = conflictsByArtifactNames.entrySet().iterator(); conflictIt.hasNext();) {
-            Map.Entry entry         = (Map.Entry)conflictIt.next();
-            String    artifactNames = (String)entry.getKey();
-            List      classNames    = (List)entry.getValue();
-
-            LOG.warn("Found duplicate " + hint + " " + type + " in " + artifactNames + " :");
-            for (Iterator classNameIt = classNames.iterator(); classNameIt.hasNext();) {
-                LOG.warn("  " + classNameIt.next());
-            }
-        }
     }
 
     /**
