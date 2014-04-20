@@ -147,10 +147,10 @@ public class DuplicateFinderMojo extends AbstractMojo
     /**
      * Skip the plugin execution.
      *
-     * <pre>
-     *   <configuration>
-     *     <skip>true</skip>
-     *   </configuration>
+     *<pre>
+     *   &lt;configuration&gt;
+     *     &lt;skip&gt;true&lt;/skip&gt;
+     *   &lt;/configuration&gt;
      * </pre>
      *
      * @parameter default-value="false"
