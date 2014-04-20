@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,21 +29,22 @@ import org.slf4j.LoggerFactory;
 
 public class FileOutputReporter implements DuplicateFinderReporter {
 	
-	private static final String CHARSET = "UTF-8";
-
 	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	private final String fileName;
+	
+	private static final int DUPLICATE_IDENTICAL=0;
+	private static final int DUPLICATE_DIFFERENCE=0;
 	
 	public FileOutputReporter(String fileName) {
 		this.fileName = fileName;
 	}
 	
 	public void reportEqualConflicts(Map classEqualConflictsByArtifactNames,String type) {
-		printWarningMessage(classEqualConflictsByArtifactNames, "(but equal)", type);		
+		printWarningMessage(classEqualConflictsByArtifactNames,DUPLICATE_IDENTICAL, type);		
 	}
 
 	public void reportDifferentConflicts(Map classDifferentConflictsByArtifactNames, String type) {
-		printWarningMessage(classDifferentConflictsByArtifactNames, "and different", type);		
+		printWarningMessage(classDifferentConflictsByArtifactNames, DUPLICATE_DIFFERENCE, type);		
 	}
 	
 	 /**
@@ -57,10 +57,10 @@ public class FileOutputReporter implements DuplicateFinderReporter {
      * 
      * 
      * @param conflictsByArtifactNames the Map of conflicts (Artifactnames, List of classes)
-     * @param hint hint with the type of the conflict ("all equal" or "content different")
+     * @param duplicateIdentical hint with the type of the conflict ("all equal" or "content different")
      * @param type type of conflict (class or resource)
      */
-    private void printWarningMessage(Map conflictsByArtifactNames, String hint, String type)
+    private void printWarningMessage(Map conflictsByArtifactNames, int duplicateIdentical, String type)
     {
 		try {
 			//PrintWriter writer = new PrintWriter(fileName,CHARSET);
@@ -72,7 +72,7 @@ public class FileOutputReporter implements DuplicateFinderReporter {
 	            List      classNames    = (List)entry.getValue();
 	            
 	            for (Iterator classNameIt = classNames.iterator(); classNameIt.hasNext();) {
-	            	writer.println(type + "," + artifactNames + "," + classNameIt.next() );
+	            	writer.println(type + "," + duplicateIdentical + "," + artifactNames + "," + classNameIt.next() );
 	            }
 	        }
 

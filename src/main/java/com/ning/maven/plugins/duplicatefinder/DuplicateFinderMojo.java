@@ -148,8 +148,9 @@ public class DuplicateFinderMojo extends AbstractMojo
     private DuplicateFinderReporter reporter;
     
     /**
-     * A set of dependecies that should be completely ignored in the check.
-     * @parameter property="outputFileName"
+     * The name of the outputfile to be used for dumping the duplicates.
+     * USed by the fileoutputreporter.
+     * @parameter expression="${outputFileName}" property="outputFileName"
      */    
     private String outputFileName;
     
@@ -183,7 +184,8 @@ public class DuplicateFinderMojo extends AbstractMojo
         	throw new MojoExecutionException("Need to supply an outputFileName");
         }
         
-        this.reporter = new FileOutputReporter(outputFileName);
+        this.reporter = new DefaultOutputReporter();
+        //this.reporter = new FileOutputReporter(outputFileName);
 
         try {
             if (skip) {
