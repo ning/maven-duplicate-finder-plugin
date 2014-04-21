@@ -147,7 +147,7 @@ public class DuplicateFinderMojo extends AbstractMojo
     /**
      * Skip the plugin execution.
      *
-     *<pre>
+     * <pre>
      *   &lt;configuration&gt;
      *     &lt;skip&gt;true&lt;/skip&gt;
      *   &lt;/configuration&gt;
