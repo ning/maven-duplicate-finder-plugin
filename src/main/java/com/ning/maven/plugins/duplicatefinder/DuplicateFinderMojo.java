@@ -150,7 +150,7 @@ public class DuplicateFinderMojo extends AbstractMojo
     /**
      * The name of the outputfile to be used for dumping the duplicates.
      * USed by the fileoutputreporter.
-     * @parameter expression="${outputFileName}" property="outputFileName"
+     * @parameter property="outputFileName"
      */    
     private String outputFileName;
     
