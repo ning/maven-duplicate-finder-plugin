@@ -338,6 +338,19 @@ will ignore all occurences of 'overview.html' on the classpath. This is useful f
 
 The resource definition is a pattern as consumed by <tt>java.util.regex.Pattern</tt>.
 
+== Globally ignoring additional classes
+
+It is possible to specify additional classes on the classpath that are excluded from the duplication check:
+
+    <ignoredClasses>
+           <class>org\.w3c\..*</class>
+           <class>org\.apache\..*</class>
+    </ignoredClasses>
+
+will ignore all classes part of the 'org.w3c' and 'org.apache' packages on the classpath. This is useful for classes that are present in many dependencies or for classes that you don't really want to consider when doingyour analysis.
+
+The class definition is a pattern as consumed by <tt>java.util.regex.Pattern</tt>.
+
 == Failing the build
 
 By default, the plugin will only print warning. However, you can configure it to fail the build using the <tt>failBuildInCaseOfConflict</tt> configuration option:
