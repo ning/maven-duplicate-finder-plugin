@@ -188,6 +188,7 @@ under the License.
             <exclude>.gitignore</exclude>
             <exclude>COPYING</exclude>
             <exclude>README.rdoc</exclude>
+            <exclude>DEBUG.md</exclude>
           </excludes>
         </configuration>
         <executions>
