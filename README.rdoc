@@ -368,6 +368,39 @@ If you want to see those classes/resources, add this configuration option:
 Note that this flag is ignored if either <tt>failBuildInCaseOfConflict</tt> or
 <tt>failBuildInCaseOfEqualContentConflict</tt> are set to <tt>true</tt>.
 
+== CSV output to a file
+
+By default the plugin will output its findings to the standard output.
+
+    [INFO] Checking runtime classpath
+    [WARNING] Found duplicate and different classes in [be.ecs:srv.customer.service1:0.0.1-SNAPSHOT,be.ecs:srv.customer.service2:0.0.1-SNAPSHOT] :
+    [WARNING]   be.ecs.service.duplicate.DuplicateDifferentContent
+    [WARNING] Found duplicate and different classes in [commons-beanutils:commons-beanutils:1.7.0,commons-collections:commons-collections:3.2.1] :
+    [WARNING]   org.apache.commons.collections.ArrayStack
+    [WARNING]   org.apache.commons.collections.BufferUnderflowException
+    [WARNING]   org.apache.commons.collections.FastHashMap
+    [WARNING] Found duplicate and different resources in [be.ecs:srv.customer.service1:0.0.1-SNAPSHOT,be.ecs:srv.customer.service2:0.0.1-SNAPSHOT] :
+    [WARNING]   be/ecs/duplicate_different_content.properties
+    [WARNING] Found duplicate and different resources in [org.apache.struts:struts-core:1.3.8,org.apache.struts:struts-taglib:1.3.8,org.apache.struts:struts-tiles:1.3.8] :
+    [WARNING]   NOTICE.txt
+
+By providing an <tt>outputFileName</tt> configuration item (or by passing it as a system property to the mvn process) you can have the plugin redirect its output in a CSV format to a file provided by the <tt>outputFileName</tt> value.
+
+    app.customer.service,0.0.1-SNAPSHOT,be.ecs.service.duplicate.DuplicateDifferentContent,classes,0,[be.ecs:srv.customer.service1:0.0.1-SNAPSHOT,be.ecs:srv.customer.service2:0.0.1-SNAPSHOT]
+    app.customer.service,0.0.1-SNAPSHOT,org.apache.commons.collections.ArrayStack,classes,0,[commons-beanutils:commons-beanutils:1.7.0,commons-collections:commons-collections:3.2.1]
+    app.customer.service,0.0.1-SNAPSHOT,org.apache.commons.collections.BufferUnderflowException,classes,0,[commons-beanutils:commons-beanutils:1.7.0,commons-collections:commons-collections:3.2.1]
+    app.customer.service,0.0.1-SNAPSHOT,org.apache.commons.collections.FastHashMap,classes,0,[commons-beanutils:commons-beanutils:1.7.0,commons-collections:commons-collections:3.2.1]
+    app.customer.service,0.0.1-SNAPSHOT,be/ecs/duplicate_different_content.properties,resources,0,[be.ecs:srv.customer.service1:0.0.1-SNAPSHOT,be.ecs:srv.customer.service2:0.0.1-SNAPSHOT]
+    app.customer.service,0.0.1-SNAPSHOT,NOTICE.txt,resources,0,[org.apache.struts:struts-core:1.3.8,org.apache.struts:struts-taglib:1.3.8,org.apache.struts:struts-tiles:1.3.8]
+
+The output contains
+
+- The module name that was being analyzed.
+- The module version that was being analyzed.
+- The duplicate that was found
+- Type type of duplicate (class or resource)
+- The modules where the duplicates were present.
+
 = License
 
 See COPYING file.
