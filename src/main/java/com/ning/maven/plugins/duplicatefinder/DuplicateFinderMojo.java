@@ -149,7 +149,8 @@ public class DuplicateFinderMojo extends AbstractMojo
     
     /**
      * The name of the outputfile to be used for dumping the duplicates.
-     * USed by the fileoutputreporter.
+     * Used by the FileOutputReporter.
+     * 
      * @parameter property="outputFileName"
      */    
     private String outputFileName;
@@ -180,12 +181,13 @@ public class DuplicateFinderMojo extends AbstractMojo
     {
         MavenLogAppender.startPluginLog(this);
         
-        if (outputFileName==null || "".equals(outputFileName)) {
-        	throw new MojoExecutionException("Need to supply an outputFileName");
+        if (this.outputFileName!=null && !"".equals(this.outputFileName)) {
+        	this.reporter = new FileOutputReporter(outputFileName);	
+        } else {
+        	this.reporter = new DefaultOutputReporter();
         }
         
-        //this.reporter = new DefaultOutputReporter();
-        this.reporter = new FileOutputReporter(outputFileName);
+        
 
         try {
             if (skip) {

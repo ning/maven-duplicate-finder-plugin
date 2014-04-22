@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.maven.plugin.MojoExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +40,11 @@ public class FileOutputReporter implements DuplicateFinderReporter {
 		this.fileName = fileName;
 	}
 	
-	public void reportEqualConflicts(String projectName, String projectVersion,Map classEqualConflictsByArtifactNames,String type) {
+	public void reportEqualConflicts(String projectName, String projectVersion,Map classEqualConflictsByArtifactNames,String type) throws MojoExecutionException {
 		writeToFile(projectName,projectVersion,classEqualConflictsByArtifactNames,DUPLICATE_IDENTICAL, type);		
 	}
 
-	public void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames, String type) {
+	public void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames, String type) throws MojoExecutionException {
 		writeToFile(projectName,projectVersion,classDifferentConflictsByArtifactNames, DUPLICATE_DIFFERENCE, type);		
 	}
 	
@@ -61,8 +62,9 @@ public class FileOutputReporter implements DuplicateFinderReporter {
      * @param conflictsByArtifactNames the Map of conflicts (Artifactnames, List of classes)
      * @param duplicateIdentical hint with the type of the conflict ("all equal" or "content different")
      * @param type type of conflict (class or resource)
+	 * @throws MojoExecutionException 
      */
-    private void writeToFile(String projectName, String projectVersion, Map conflictsByArtifactNames, int duplicateIdentical, String type)
+    private void writeToFile(String projectName, String projectVersion, Map conflictsByArtifactNames, int duplicateIdentical, String type) throws MojoExecutionException
     {
 		try {
 			//PrintWriter writer = new PrintWriter(fileName,CHARSET);
@@ -80,7 +82,7 @@ public class FileOutputReporter implements DuplicateFinderReporter {
 
 	        writer.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw new MojoExecutionException("Error writing to output file.",e);
 		}
         
     }	

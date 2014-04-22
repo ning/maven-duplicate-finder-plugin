@@ -18,10 +18,12 @@ package com.ning.maven.plugins.duplicatefinder;
 
 import java.util.Map;
 
+import org.apache.maven.plugin.MojoExecutionException;
+
 public interface DuplicateFinderReporter {
 
-	void reportEqualConflicts(String projectName, String projectVersion, Map classEqualConflictsByArtifactNames,String type);
+	void reportEqualConflicts(String projectName, String projectVersion, Map classEqualConflictsByArtifactNames,String type) throws MojoExecutionException;
 
-	void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames,String type);
+	void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames,String type) throws MojoExecutionException;
 
 }
