@@ -184,8 +184,8 @@ public class DuplicateFinderMojo extends AbstractMojo
         	throw new MojoExecutionException("Need to supply an outputFileName");
         }
         
-        this.reporter = new DefaultOutputReporter();
-        //this.reporter = new FileOutputReporter(outputFileName);
+        //this.reporter = new DefaultOutputReporter();
+        this.reporter = new FileOutputReporter(outputFileName);
 
         try {
             if (skip) {
@@ -314,7 +314,7 @@ public class DuplicateFinderMojo extends AbstractMojo
                 failBuildInCaseOfConflict ||
                 failBuildInCaseOfEqualContentConflict) {
 
-            	reporter.reportEqualConflicts(classEqualConflictsByArtifactNames,"classes");
+            	reporter.reportEqualConflicts(this.project.getName(),this.project.getVersion(),classEqualConflictsByArtifactNames,"classes");
             }
 
             conflict = CONFLICT_CONTENT_EQUAL;
@@ -322,7 +322,7 @@ public class DuplicateFinderMojo extends AbstractMojo
 
         if (!classDifferentConflictsByArtifactNames.isEmpty()) {
         	
-        	reporter.reportDifferentConflicts(classDifferentConflictsByArtifactNames,"classes");
+        	reporter.reportDifferentConflicts(this.project.getName(),this.project.getVersion(),classDifferentConflictsByArtifactNames,"classes");
         	
             conflict = CONFLICT_CONTENT_DIFFERENT;
         }
@@ -374,7 +374,7 @@ public class DuplicateFinderMojo extends AbstractMojo
                 failBuildInCaseOfConflict ||
                 failBuildInCaseOfEqualContentConflict) {
 
-            	reporter.reportEqualConflicts(resourceEqualConflictsByArtifactNames,"resources");
+            	reporter.reportEqualConflicts(this.project.getName(),this.project.getVersion(),resourceEqualConflictsByArtifactNames,"resources");
             	
             }
 
@@ -383,7 +383,7 @@ public class DuplicateFinderMojo extends AbstractMojo
 
         if (!resourceDifferentConflictsByArtifactNames.isEmpty()) {
         	
-        	reporter.reportDifferentConflicts(resourceDifferentConflictsByArtifactNames,"resources");
+        	reporter.reportDifferentConflicts(this.project.getName(),this.project.getVersion(),resourceDifferentConflictsByArtifactNames,"resources");
         	
             conflict = CONFLICT_CONTENT_DIFFERENT;
         }

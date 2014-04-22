@@ -20,8 +20,8 @@ import java.util.Map;
 
 public interface DuplicateFinderReporter {
 
-	void reportEqualConflicts(Map classEqualConflictsByArtifactNames,String type);
+	void reportEqualConflicts(String projectName, String projectVersion, Map classEqualConflictsByArtifactNames,String type);
 
-	void reportDifferentConflicts(Map classDifferentConflictsByArtifactNames,String type);
+	void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames,String type);
 
 }

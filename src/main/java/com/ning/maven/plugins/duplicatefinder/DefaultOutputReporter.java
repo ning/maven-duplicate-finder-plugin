@@ -27,11 +27,11 @@ public class DefaultOutputReporter implements DuplicateFinderReporter {
 
 	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 	
-	public void reportEqualConflicts(Map classEqualConflictsByArtifactNames,String type) {
+	public void reportEqualConflicts(String projectName, String projectVersion,Map classEqualConflictsByArtifactNames,String type) {
 		printWarningMessage(classEqualConflictsByArtifactNames, "(but equal)", type);		
 	}
 
-	public void reportDifferentConflicts(Map classDifferentConflictsByArtifactNames, String type) {
+	public void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames, String type) {
 		printWarningMessage(classDifferentConflictsByArtifactNames, "and different", type);		
 	}
 	
