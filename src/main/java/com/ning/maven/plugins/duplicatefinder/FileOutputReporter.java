@@ -40,11 +40,11 @@ public class FileOutputReporter implements DuplicateFinderReporter {
 	}
 	
 	public void reportEqualConflicts(String projectName, String projectVersion,Map classEqualConflictsByArtifactNames,String type) {
-		printWarningMessage(projectName,projectVersion,classEqualConflictsByArtifactNames,DUPLICATE_IDENTICAL, type);		
+		writeToFile(projectName,projectVersion,classEqualConflictsByArtifactNames,DUPLICATE_IDENTICAL, type);		
 	}
 
 	public void reportDifferentConflicts(String projectName, String projectVersion,Map classDifferentConflictsByArtifactNames, String type) {
-		printWarningMessage(projectName,projectVersion,classDifferentConflictsByArtifactNames, DUPLICATE_DIFFERENCE, type);		
+		writeToFile(projectName,projectVersion,classDifferentConflictsByArtifactNames, DUPLICATE_DIFFERENCE, type);		
 	}
 	
 	 /**
@@ -62,7 +62,7 @@ public class FileOutputReporter implements DuplicateFinderReporter {
      * @param duplicateIdentical hint with the type of the conflict ("all equal" or "content different")
      * @param type type of conflict (class or resource)
      */
-    private void printWarningMessage(String projectName, String projectVersion, Map conflictsByArtifactNames, int duplicateIdentical, String type)
+    private void writeToFile(String projectName, String projectVersion, Map conflictsByArtifactNames, int duplicateIdentical, String type)
     {
 		try {
 			//PrintWriter writer = new PrintWriter(fileName,CHARSET);
