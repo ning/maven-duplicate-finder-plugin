@@ -45,7 +45,7 @@ public class Exception
     private Set classes = new HashSet();
     private Set packages = new HashSet();
     private Set resources = new HashSet();
-    private Pattern [] matchingResources;
+    private Pattern [] matchingResources = new Pattern[0];
 
     public void setConflictingDependencies(Dependency[] conflictingDependencies) throws InvalidVersionSpecificationException
     {
@@ -183,9 +183,10 @@ public class Exception
     {
         String resourceAsRelative = (resource.startsWith("/") || resource.startsWith("\\") ? resource.substring(1) : resource);
 
-        if(resources.contains(resourceAsRelative) ||
-           resources.contains("/" + resourceAsRelative) ||
-           resources.contains("\\" + resourceAsRelative)) {
+        if (resources.contains(resourceAsRelative) ||
+            resources.contains("/" + resourceAsRelative) ||
+            resources.contains("\\" + resourceAsRelative)) {
+
             return true;
         }
 

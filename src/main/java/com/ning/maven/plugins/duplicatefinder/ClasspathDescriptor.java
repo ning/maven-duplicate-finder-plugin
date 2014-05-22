@@ -59,7 +59,7 @@ public class ClasspathDescriptor
                                                                  Pattern.compile("META-INF/SPRING\\.HANDLERS"),
                                                                  Pattern.compile("META-INF/SPRING\\.SCHEMAS"),
                                                                  Pattern.compile("META-INF/SPRING\\.TOOLING")};
-
+    
     private static final Set IGNORED_LOCAL_DIRECTORIES = new HashSet();
 
     private static final Map CACHED_BY_ELEMENT = new HashMap();
@@ -72,11 +72,11 @@ public class ClasspathDescriptor
     }
 
     // TreeMap<String, File>
-    private Map classesWithElements   = new TreeMap();
-
+    private Map classesWithElements = new TreeMap();
+    
     // TreeMap<String, File>
     private Map resourcesWithElements = new TreeMap();
-
+    
     private boolean useDefaultResourceIgnoreList = true;
 
     private Pattern [] ignoredResourcesPatterns = null;
@@ -117,7 +117,8 @@ public class ClasspathDescriptor
                 for (int i = 0 ; i < ignoredResources.length; i++) {
                     ignoredResourcesPatterns[i] = Pattern.compile(ignoredResources[i].toUpperCase());
                 }
-            } catch (PatternSyntaxException pse) {
+            }
+            catch (PatternSyntaxException pse) {
                 throw new MojoExecutionException("Error compiling resourceIgnore pattern: " + pse.getMessage());
             }
         }
