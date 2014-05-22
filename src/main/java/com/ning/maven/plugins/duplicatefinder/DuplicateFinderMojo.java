@@ -97,7 +97,7 @@ public class DuplicateFinderMojo extends AbstractMojo
     private boolean failBuildInCaseOfEqualContentConflict;
 
     /**
-     * Whether the mojo should fail the build if a conflict was found. 
+     * Whether the mojo should fail the build if a conflict was found.
      * @parameter default-value="false"
      */
     private boolean failBuildInCaseOfConflict;
@@ -119,7 +119,6 @@ public class DuplicateFinderMojo extends AbstractMojo
      * @parameter alias="ignoredPackages"
      */
     private String [] ignoredPackages;
-
 
     /**
      * A set of artifacts with expected and resolved versions that are to be except from the check.

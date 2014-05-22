@@ -266,9 +266,8 @@ public class ClasspathDescriptor
 
     private boolean ignoreClass(String className)
     {
-
         // always ignore inner classes
-        if (className.indexOf('$') < 0) {
+        if (className.indexOf('$') >= 0) {
             return true;
         }
 
@@ -280,7 +279,6 @@ public class ClasspathDescriptor
                 }
             }
         }
-
         return false;
     }
 
