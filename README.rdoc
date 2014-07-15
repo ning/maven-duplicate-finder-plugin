@@ -4,7 +4,11 @@ The <tt>maven-duplicate-finder-plugin</tt> is a plugin that will search for clas
 in the classpaths of a maven project. More specifically, it will check the compile, runtime, and test classpaths for
 * Classes with the same qualified name in the current project and all dependencies relevant for that classpath
 * Files that are not <tt>class</tt> files, with the same resource path (i.e. as if it would be accessed via the classloader) in the current project and all dependencies relevant for that classpath
-(Note that at the moment, the plugin does not check if the files are actually the same or not, it only looks for the same file/class name.)
+
+The plugin is capable of finding
+
+- duplicate but identical classes/resources (as per SHA256). 
+- duplicate but different classes/resources (as per SHA256).
 
 = How to use it
 
