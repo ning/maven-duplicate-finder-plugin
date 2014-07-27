@@ -81,6 +81,8 @@ public class ClasspathDescriptor
 
     private Pattern [] ignoredResourcesPatterns = null;
 
+	private Pattern[] ignoredClassesPatterns = null;
+
     public boolean isUseDefaultResourceIgnoreList()
     {
         return useDefaultResourceIgnoreList;
@@ -106,6 +108,23 @@ public class ClasspathDescriptor
             }
         }
     }
+    
+	public void setIgnoredClasses(String[] ignoredClasses) throws MojoExecutionException
+	{
+        if (ignoredClasses != null) {
+            ignoredClassesPatterns = new Pattern [ignoredClasses.length];
+
+            try {
+                for (int i = 0 ; i < ignoredClasses.length; i++) {
+                	ignoredClassesPatterns[i] = Pattern.compile(ignoredClasses[i]);
+                }
+            }
+            catch (PatternSyntaxException pse) {
+                throw new MojoExecutionException("Error compiling classesIgnore pattern: " + pse.getMessage());
+            }
+        }		
+	}
+    
 
     public void add(File element) throws IOException
     {
@@ -236,7 +255,7 @@ public class ClasspathDescriptor
 
     private void addClass(String className, File element)
     {
-        if (className.indexOf('$') < 0) {
+        if (!ignoreClass(className)  && className.indexOf('$') < 0) {
             Set elements = (Set)classesWithElements.get(className);
 
             if (elements == null) {
@@ -249,7 +268,7 @@ public class ClasspathDescriptor
 
     private void addResource(String path, File element)
     {
-        if (!ignore(path)) {
+        if (!ignoreResource(path)) {
             Set elements = (Set)resourcesWithElements.get(path);
 
             if (elements == null) {
@@ -260,7 +279,7 @@ public class ClasspathDescriptor
         }
     }
 
-    private boolean ignore(String path)
+    private boolean ignoreResource(String path)
     {
         final String uppercasedPath = path.toUpperCase().replace(File.separatorChar, '/');
 
@@ -286,6 +305,20 @@ public class ClasspathDescriptor
         return false;
     }
 
+    private boolean ignoreClass(String path)
+    {
+        // check whether there is an user supplied ignore pattern.
+        if (ignoredClassesPatterns!= null) {
+            for (int idx = 0; idx < ignoredClassesPatterns.length; idx++) {
+                if (ignoredClassesPatterns[idx].matcher(path).matches()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }    
+    
     private boolean addCached(File element)
     {
         Cached cached = (Cached) CACHED_BY_ELEMENT.get(element);
@@ -327,4 +360,5 @@ public class ClasspathDescriptor
             return resources;
         }
     }
+
 }
