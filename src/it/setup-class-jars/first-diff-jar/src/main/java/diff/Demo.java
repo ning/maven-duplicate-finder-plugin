@@ -13,24 +13,11 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.ning.maven.plugins.duplicatefinder;
+package diff;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
-public class ToStringComparator implements Comparator<Object>, Serializable
+public class Demo
 {
-    @Override
-    public int compare(final Object objA, final Object objB)
-    {
-        if (objA == null) {
-            return objB == null ? 0 : -1;
-        }
-        else if (objB == null) {
-            return 1;
-        }
-        else {
-            return objA.toString().compareTo(objB.toString());
-        }
+    public static final void main(String ... args) throws Exception {
+        System.out.println("Hello, first-diff-jar World!");
     }
 }
