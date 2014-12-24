@@ -126,14 +126,13 @@ public class DuplicateFinderMojo extends AbstractMojo
     protected String[] ignoredResources;
 
     /**
-     * Artifacts with expected and resolved versions that are checked.
      * Additional packages that should be ignored.
      */
     @Parameter
     private String [] ignoredPackages;
 
     /**
-     * A set of artifacts with expected and resolved versions that are to be except from the check.
+     * Artifacts with expected and resolved versions that are checked.
      */
     @Parameter
     protected Exception[] exceptions;
