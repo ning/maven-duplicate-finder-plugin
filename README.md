@@ -1,5 +1,13 @@
 # Maven duplicate finder plugin
 
+** PLUGIN HAS MOVED **
+
+Starting with version 1.1.0, [the duplicate finder plugin has moved](https://github.com/basepom/duplicate-finder-maven-plugin).
+
+Please contribute any pull requests, but reports etc. to the the new location.
+
+** PLUGIN HAS MOVED **
+
 ## Major changes from Version 1.0.x
 
 Starting with version 1.1.0 of the duplicate finder plugin, Maven 3.x and Java 6 or better are **required**.
