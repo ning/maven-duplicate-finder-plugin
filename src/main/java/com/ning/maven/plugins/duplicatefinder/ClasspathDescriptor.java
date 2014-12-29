@@ -53,6 +53,7 @@ public class ClasspathDescriptor
                     Pattern.compile("README(\\.TXT)?"),
                     Pattern.compile(".*PACKAGE\\.HTML"),
                     Pattern.compile(".*OVERVIEW\\.HTML"),
+                    Pattern.compile("META-INF/SPRING\\.FACTORIES"),
                     Pattern.compile("META-INF/SPRING\\.HANDLERS"),
                     Pattern.compile("META-INF/SPRING\\.SCHEMAS"),
                     Pattern.compile("META-INF/SPRING\\.TOOLING") };
